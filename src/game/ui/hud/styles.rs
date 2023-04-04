@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-pub const HUD_BACKGROUND_COLOR: Color = Color::rgba(0.25, 0.25, 0.25, 0.5);
+pub const HUD_BACKGROUND_COLOR: Color = Color::rgba(0.25, 0.25, 0.25, 0.0);
 
 pub const HUD_MENU_STYLE: Style = Style {
     display: Display::Flex,
@@ -16,7 +16,7 @@ pub const HUD_MENU_STYLE: Style = Style {
 pub const HUD_MENU_CONTAINER_STYLE: Style = Style {
     display: Display::Flex,
     flex_direction: FlexDirection::Row,
-    justify_content: JustifyContent::SpaceEvenly,
+    justify_content: JustifyContent::Start,
     align_items: AlignItems::Center,
     size: Size::new(Val::Percent(100.0), Val::Percent(15.0)),
     gap: Size::new(Val::Px(8.0), Val::Px(8.0)),
@@ -30,7 +30,7 @@ pub const IMAGE_STYLE: Style = Style {
 };
 
 pub const HUD_BUTTON_STYLE: Style = Style {
-    size: Size::new(Val::Percent(15.0), Val::Percent(100.0)),
+    size: Size::new(Val::Percent(7.0), Val::Percent(100.0)),
     justify_content: JustifyContent::Center,
     align_items: AlignItems::Center,
     ..Style::DEFAULT

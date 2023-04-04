@@ -34,7 +34,7 @@ pub fn build_hud_menu(commands: &mut Commands, asset_server: &Res<AssetServer>) 
             parent
                 .spawn(NodeBundle {
                     style: HUD_MENU_CONTAINER_STYLE,
-                    background_color: BACKGROUND_COLOR.into(),
+                    background_color: HUD_BACKGROUND_COLOR.into(),
                     ..default()
                 })
                 .with_children(|parent| {
