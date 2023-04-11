@@ -1,7 +1,9 @@
+use bevy::a11y::accesskit::Action;
 use crate::game::player::systems::*;
 use crate::game::SimulationState;
 use crate::AppState;
 use bevy::prelude::*;
+
 
 pub mod components;
 pub mod systems;
@@ -33,6 +35,7 @@ impl Plugin for PlayerPlugin {
             // .add_startup_system(spawn_player)
             // On Enter State
             .add_system(spawn_player.in_schedule(OnEnter(AppState::Game)))
+
             // Player systems
             .add_systems(
                 (

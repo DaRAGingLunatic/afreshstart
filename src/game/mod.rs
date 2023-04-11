@@ -7,6 +7,7 @@ pub mod score;
 pub mod star;
 mod systems;
 pub(crate) mod ui;
+mod powerups;
 
 use crate::events::GameOver;
 use crate::AppState;
@@ -16,6 +17,7 @@ use player::PlayerPlugin;
 use score::ScorePlugin;
 use star::StarPlugin;
 use systems::*;
+use crate::game::powerups::PowerUpPlugin;
 use crate::game::ui::GameUIPlugin;
 
 pub struct GamePlugin;
@@ -36,6 +38,7 @@ impl Plugin for GamePlugin {
             .add_plugin(StarPlugin)
             .add_plugin(CameraPlugin)
             .add_plugin(GameUIPlugin)
+            .add_plugin(PowerUpPlugin)
             // systems
             .add_system(toggle_simulation.run_if(in_state(AppState::Game)))
             // the toggle simulation above will only run if we are in the AppState::Game state.

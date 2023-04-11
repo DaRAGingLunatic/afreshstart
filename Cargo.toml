@@ -9,3 +9,5 @@ edition = "2021"
 bevy = "0.10.1"
 rand = "0.8.5"
 bevy_input = "0.10.1"
+bevy_rapier2d = "0.21.0"
+

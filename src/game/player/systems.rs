@@ -1,6 +1,9 @@
+
 use crate::game::player::components::Player;
 use bevy::prelude::*;
 use bevy::window::PrimaryWindow;
+use bevy_input::gamepad;
+
 
 use crate::game::score::resources::Score;
 use crate::game::star::components::Star;
@@ -9,6 +12,7 @@ use crate::game::star::systems::HALF_STAR_SIZE;
 pub const PLAYER_SPEED: f32 = 500.0;
 //pub const PLAYER_SIZE: f32 = 64.0; // Player sprite size
 pub const HALF_PLAYER_SIZE: f32 = 32.0; // Player pixel size
+
 
 pub fn spawn_player(
     mut commands: Commands,
@@ -24,7 +28,7 @@ pub fn spawn_player(
             texture: asset_server.load("sprites/ball_blue_large.png"),
             ..default()
         },
-        Player {},
+        Player {}
     ));
 }
 
@@ -38,6 +42,7 @@ pub fn player_movement(
     keyboard_input: Res<Input<KeyCode>>,
     mut player_query: Query<&mut Transform, With<Player>>,
     time: Res<Time>,
+
 ) {
     // get_single_mut returns a Result<T, E> block. It's safer to do this if let Ok as unlike the
     // get single window earlier, it might not always get the player.
