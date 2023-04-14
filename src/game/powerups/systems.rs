@@ -1,14 +1,16 @@
-use bevy::a11y::accesskit::Invalid;
-use bevy::a11y::accesskit::Invalid::True;
+use bevy::ecs::system::EntityCommands;
 use bevy::prelude::*;
+use bevy::utils::petgraph::visit::Walker;
 use bevy::window::PrimaryWindow;
 use crate::game::powerups::components::{PowerUp, Rocket};
 use rand::prelude::*;
 use crate::game::enemy::components::{Enemy, EnemyBullet};
-use crate::game::enemy::systems::{ENEMY_BULLET_SPEED, HALF_ENEMY_BULLET_SIZE, HALF_ENEMY_SIZE};
+use crate::game::enemy::systems::{HALF_ENEMY_BULLET_SIZE, HALF_ENEMY_SIZE};
 use crate::game::player::components::Player;
-use crate::game::powerups::resources::{PowerUpSpawnTimer};
+use crate::game::powerups::resources::{HomingSpawnTimer, PowerUpSpawnTimer};
 use crate::game::score::resources::Score;
+use crate::game::star::resources::StarSpawnTimer;
+use bevy::ecs::query::Without;
 
 pub const HALF_PLAYER_SIZE: f32 = 32.0; // Player pixel size
 pub const HALF_POWER_UP_SIZE: f32 = 94.0;
@@ -74,9 +76,9 @@ pub fn player_hit_power_up(
     asset_server: Res<AssetServer>,
     audio: Res<Audio>,
     mut score: ResMut<Score>,
-    time: Res<Time>
+    _time: Res<Time>
 ) {
-    if let Ok((player_entity, player_transform)) = player_query.get_single_mut() {
+    if let Ok((_player_entity, player_transform)) = player_query.get_single_mut() {
         for (power_up_entity, power_up_transform) in power_up_query.iter_mut() {
             let player_position = player_transform.translation;
             let distance = player_transform
@@ -106,36 +108,36 @@ pub fn player_hit_power_up(
                             ..Default::default()
                         }
                     )
-                        .insert(Rocket { direction, rotation });
+                        .insert(Rocket { direction, rotation, target_enemy: enemy_entity });
+                }
 
                 }
             }
         }
     }
-}
-
-/*
-pub fn enemy_bullet_movement(
-    mut enemy_bullet_query: Query<(&mut Transform, &EnemyBullet)>,
-    time: Res<Time>,
-) {
-    for (mut transform, enemy_bullet) in enemy_bullet_query.iter_mut() {
-        let direction = Vec3::new(enemy_bullet.direction.x, enemy_bullet.direction.y, 0.0);
-        transform.translation += direction * ENEMY_BULLET_SPEED * time.delta_seconds();
-    }
-}
-
-*/
-
 
 
 pub fn rocket_movement(
-    mut rocket_query: Query<(&mut Transform, &Rocket)>,
+    mut commands: Commands,
+    mut rocket_query: Query<(Entity, &mut Transform, &Rocket)>,
+    enemy_query: Query<&Transform, (With<Enemy>, Without<Rocket>)>,
     time: Res<Time>,
 ) {
-    for (mut rocket_transform, rocket) in rocket_query.iter_mut() {
-        let direction = Vec3::new(rocket.direction.x, rocket.direction.y, 0.0);
-        rocket_transform.translation += direction * ROCKET_SPEED * time.delta_seconds();
+    for (rocket_entity, mut rocket_transform, rocket) in rocket_query.iter_mut() {
+        let rocket_position = rocket_transform.translation;
+
+        if let Ok(target_transform) = enemy_query.get(rocket.target_enemy) {
+            let target_position = target_transform.translation;
+            let forward_axis = Vec3::new(0.0, 1.0, 0.0); // Assuming the rocket's forward axis is aligned with the positive Y-axis
+            let direction = (target_position - rocket_position).normalize();
+            let rotation_angle = angle_between_vectors(forward_axis, direction);
+            let rotation = Quat::from_rotation_z(rotation_angle);
+            rocket_transform.rotation = rotation;
+
+            rocket_transform.translation += direction * ROCKET_SPEED * time.delta_seconds();
+        } else {
+            commands.entity(rocket_entity).despawn();
+        }
     }
 }
 
@@ -175,4 +177,10 @@ pub fn rocket_hit_enemy(
         }
     }
 }
+
+
+pub fn tick_homing_spawn_timer(mut star_spawn_timer: ResMut<StarSpawnTimer>, time: Res<Time>) {
+    star_spawn_timer.timer.tick(time.delta());
+}
+
 

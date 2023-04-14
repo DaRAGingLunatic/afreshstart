@@ -4,11 +4,11 @@ pub mod main_menu;
 pub mod systems;
 
 
-use bevy::a11y::accesskit::Action;
+
 use crate::game::GamePlugin;
 use crate::main_menu::MainMenuPlugin;
 use bevy::prelude::*;
-use bevy::window::{PresentMode, WindowMode};
+use bevy::window::{WindowMode};
 use systems::*;
 
 

@@ -1,7 +1,7 @@
 use bevy::prelude::*;
 use crate::game::ui::hud::styles::*;
 
-use crate::game::ui::*;
+
 use crate::game::ui::hud::components::{AxeManButton, AxeThrowerButton, GiantSlothButton, HudMenu, KnightAndHorseButton, MinerButton, OgreMagiButton, ShieldAndSwordButton};
 use crate::game::ui::pause_menu::styles::*;
 

@@ -18,3 +18,17 @@ impl Default for PowerUpSpawnTimer {
     }
 }
 
+pub const HOMING_SPAWN_TIME: f32 = 0.20;
+
+#[derive(Resource)]
+pub struct HomingSpawnTimer {
+    pub timer: Timer,
+}
+
+impl Default for HomingSpawnTimer {
+    fn default() -> HomingSpawnTimer {
+        HomingSpawnTimer {
+            timer: Timer::from_seconds(HOMING_SPAWN_TIME, TimerMode::Repeating),
+        }
+    }
+}

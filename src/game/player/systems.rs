@@ -2,7 +2,7 @@
 use crate::game::player::components::Player;
 use bevy::prelude::*;
 use bevy::window::PrimaryWindow;
-use bevy_input::gamepad;
+
 
 
 use crate::game::score::resources::Score;

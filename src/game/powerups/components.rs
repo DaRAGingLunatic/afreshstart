@@ -1,5 +1,5 @@
 use bevy::prelude::*;
-use bevy::prelude::shape::Quad;
+
 
 #[derive(Component)]
 pub struct PowerUp {}
@@ -8,4 +8,5 @@ pub struct PowerUp {}
 pub struct Rocket {
     pub direction: Vec3,
     pub rotation: Quat,
+    pub target_enemy: Entity,
 }

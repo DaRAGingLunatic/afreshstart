@@ -1,5 +1,5 @@
 use bevy::prelude::*;
-
+use bevy::ecs::query::Without;
 pub(crate) mod components;
 pub(crate) mod resources;
 pub(crate) mod systems;
@@ -16,7 +16,7 @@ impl Plugin for PowerUpPlugin {
         app
             // Resources
             .init_resource::<PowerUpSpawnTimer>()
-
+            .init_resource::<HomingSpawnTimer>()
             // Startup systems
             // .add_startup_system(spawn_enemies)
             // Enter State systems
@@ -27,9 +27,11 @@ impl Plugin for PowerUpPlugin {
                 (
                     player_hit_power_up,
                     tick_power_up_spawn_timer,
+                    tick_homing_spawn_timer,
                     spawn_power_up_over_time,
                     rocket_hit_enemy,
-                    rocket_movement,
+                    rocket_movement
+
                 )
                     .in_set(OnUpdate(AppState::Game))
                     .in_set(OnUpdate(SimulationState::Running)),

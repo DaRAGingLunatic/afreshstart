@@ -1,7 +1,7 @@
 use bevy::app::AppExit;
 use bevy::prelude::*;
-use bevy_input::{mouse::MouseButton, touch::Touches, Input};
-use crate::game::ui::pause_menu::components::*;
+
+
 use crate::game::ui::pause_menu::styles::*;
 use crate::game::SimulationState;
 use crate::AppState;
